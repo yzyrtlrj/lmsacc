@@ -1,0 +1,29 @@
+@CHARSET "UTF-8";
+table.t2{
+	border-bottom:1;
+	padding:5px;
+	margin: 10px auto;
+	text-align: center;
+	background: rgba(225,225,225,0.6);
+	border-collapse: collapse;
+	width: 1200px;
+	line-height: 24px;
+}
+table.t2 td{
+	margin:0px;
+}
+a{text-decoration: none;}
+div.nav{
+	margin-top:20px;
+	margin-left:1070px;
+}
+div#searchCondition {
+	margin-top:20px;
+	margin-left:80px;
+}
+div#searchCondition input{
+	width:100px;
+}
+div#searchCondition input.seearch{
+	float:left;
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+  <hibernate-mapping package="com.accenture.aflac.lms.dao.entity">
+  
+      <class name="Record" table="lms_record" where="delete_status=0">
+          
+          <id name="id">
+            <column name="id" />
+            <generator class="identity" />
+          </id>
+          <property name="borrowDate" type="java.sql.Date">
+              <column name="borrow_date"></column>
+          </property>
+          <property name="returnDate" type="java.sql.Date">
+              <column name="return_date"></column>
+          </property>
+          <property name="effectiveDate" type="java.sql.Date">
+              <column name="effective_date"></column>
+          </property>
+          <property name="borrowStatus" type="java.lang.String">
+              <column name="borrow_status"></column>
+          </property>
+          <property name="deleteStatus" type="java.lang.Integer">
+              <column name="delete_status"></column>
+          </property>
+          
+          <property name="createUser" type="java.lang.String">
+              <column name="create_user"></column>
+          </property>
+          <property name="createDate" type="java.sql.Date">
+              <column name="create_date"></column>
+          </property>
+          <property name="updateUser" type="java.lang.String">
+              <column name="update_user"></column>
+          </property>
+          <property name="updateDate" type="java.sql.Date">
+              <column name="update_date"></column>
+          </property>
+          
+          <!-- 
+          ********************************改修 start*********************************
+          	此处 的两个many-to-one添加lazy="false"属性
+           -->
+          
+          <many-to-one name="user"  class="User" column="user_id" lazy="false" cascade="all"/>
+          
+          <many-to-one name="book" class="Book" column="book_index_num" lazy="false" cascade="all"/>
+          
+          <!-- 
+          ********************************改修 end*********************************
+           -->
+      </class>
+      
+      
+      
+  </hibernate-mapping>

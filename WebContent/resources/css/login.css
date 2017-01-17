@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+* {
+	margin: 0;
+}
+#header {
+	width: 100%;
+	height: 70px;
+	text-align: center;
+	padding-top: 30px;
+}
+
+#main {
+	width: 500px;
+	height: 200px;
+	padding-left:580px;
+	margin-top:140px;
+}
+#footer {
+	width: 100%;
+	height: 55px;
+}
+.main_nav{
+	margin-left:80px;
+}
+div.formButton{
+	width:70px;
+}
