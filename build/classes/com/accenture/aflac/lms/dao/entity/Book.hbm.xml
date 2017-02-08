@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ 
+    
+  <hibernate-mapping package="com.accenture.aflac.lms.dao.entity">
+  
+  <!-- <filter-def name="deleteStatusFilter" condition=""/> -->
+      <class name="Book" table="lms_book" where="delete_status=0">
+          
+          <id name="indexNum" type="java.lang.String">
+            <column name="index_num" />
+            <generator class="native" />
+          </id>
+
+          <property name="bookName" type="java.lang.String">
+              <column name="book_name"></column>
+          </property>
+          <property name="isbn" type="java.lang.String">
+              <column name="isbn"></column>
+          </property>
+          <property name="catagoryName" type="java.lang.String">
+              <column name="catagory_name"></column>
+          </property>
+          <property name="bookStatus" type="java.lang.String" >
+              <column name="book_status"></column>
+          </property>
+          <property name="author" type="java.lang.String">
+              <column name="author"></column>
+          </property>
+          <property name="price" type="java.lang.Double">
+              <column name="price"></column>
+          </property>
+          <property name="press" type="java.lang.String">
+              <column name="press"></column>
+          </property>
+          <property name="bookPicturePath" type="java.lang.String">
+              <column name="book_picture_path"></column>
+          </property>
+          <property name="summary" type="java.lang.String">
+              <column name="summary"></column>
+          </property>
+          <property name="publishDate" type="java.sql.Date">
+              <column name="publish_date"></column>
+          </property>
+          <property name="remark" type="java.lang.String">
+              <column name="remark"></column>
+          </property>
+          <property name="deleteStatus" type="java.lang.Integer">
+              <column name="delete_status"></column>
+          </property>
+          
+          <property name="createUser" type="java.lang.String">
+              <column name="create_user"></column>
+          </property>
+          <property name="createDate" type="java.sql.Date">
+              <column name="create_date"></column>
+          </property>
+          <property name="updateUser" type="java.lang.String">
+              <column name="update_user"></column>
+          </property>
+          <property name="updateDate" type="java.sql.Date">
+              <column name="update_date"></column>
+          </property>
+          
+          <set name="records" inverse="true" lazy="true" cascade="all">
+              <key column="book_index_num"/>
+              <one-to-many class="Record"/>
+          </set>
+          
+      </class>
+      
+      
+      
+</hibernate-mapping>

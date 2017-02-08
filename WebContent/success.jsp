@@ -13,6 +13,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </head>
 <body>
 	<div
-		style="width: 100%; height: 100px; font-size: 70pt; text-align: center;">4044444444</div>
+		style="width: 100%; height: 100px; font-size: 70pt; text-align: center;">success</div>
 </body>
 </html>
