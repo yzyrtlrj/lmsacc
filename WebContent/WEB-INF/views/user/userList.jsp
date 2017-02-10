@@ -36,12 +36,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <thead>
             <tr>
             	<th>NO</th>
-	            <th>姓名</th>
-	            <th>性別</th>
 	            <th>EID</th>
 	            <th>TEL</th>
 	            <th>項目名</th> 
-	            <th>最大可借本数</th>         
+	            <th>最多可借本数</th>         
 	            <th ></th>
 	            <th ></th>
 	            <th ></th>
@@ -51,8 +49,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <s:iterator value="#request.userList" var="user">
             <tr>
                 <td><s:property value="#user.id"/></td>
-                <td><s:property value="#user.realName"/></td>
-                <td><s:property value="#user.sex"/></td>
                 <td><s:property value="#user.eid"/></td>
                 <td><s:property value="#user.tel"/></td>
                 <td><s:property value="#user.projectName"/></td>
