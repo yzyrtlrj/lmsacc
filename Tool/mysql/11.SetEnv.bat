@@ -1,0 +1,1 @@
+Path = D:\JavaEE\mysql-5.6.35-winx64\bin;%Path%
