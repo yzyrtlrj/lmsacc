@@ -1,74 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
     
-  <hibernate-mapping package="com.accenture.aflac.lms.dao.entity">
-  <!-- package: 实体所在位置 -->
-      <class name="User" table="lms_user" where="delete_status=0">
-      <!-- id:表示主键 -->
-          <id name="id">
-            <column name="id" />
-            <generator class="identity" />
-          </id>
-          <property name="eid" type="java.lang.String">
-              <column name="eid"></column>
-          </property>
-          <property name="realName" type="java.lang.String">
-              <column name="real_name"></column>
-          </property>
-          <property name="password" type="java.lang.String">
-              <column name="password"></column>
-          </property>
-          <property name="email" type="java.lang.String">
-              <column name="email"></column>
-          </property>
-          <property name="role" type="java.lang.String">
-              <column name="role"></column>
-          </property>
-          <property name="tel" type="java.lang.String">
-              <column name="tel"></column>
-          </property>
-          <property name="sex" type="java.lang.String">
-              <column name="sex"></column>
-          </property>
-          <property name="borrowedCount" type="java.lang.Integer">
-              <column name="borrowed_count"></column>
-          </property>
-          <property name="projectName" type="java.lang.String">
-              <column name="project_name"></column>
-          </property>
-          
-          <property name="borrowCountLimit" type="java.lang.Integer">
-              <column name="borrow_count_limit"></column>
-          </property>
-          <property name="remark" type="java.lang.String">
-              <column name="remark"></column>
-          </property>
-          <property name="deleteStatus" type="java.lang.Integer">
-              <column name="delete_status"></column>
-          </property>
-          
-          <property name="createUser" type="java.lang.String">
-              <column name="create_user"></column>
-          </property>
-          <property name="createDate" type="java.sql.Date">
-              <column name="create_date"></column>
-          </property>
-          <property name="updateUser" type="java.lang.String">
-              <column name="update_user"></column>
-          </property>
-          <property name="updateDate" type="java.sql.Date">
-              <column name="update_date"></column>
-          </property>
-          
-          <!-- name:对应该实体类中封装的实体变量名 
-             set：表示一个集合-->
-          <set name="records" inverse="true" lazy="true" cascade="all">
-              <key column="user_id"/>
-              <one-to-many class="Record"/>
-          </set>
-          
-      </class>
-       
-      
-  </hibernate-mapping>
+<hibernate-mapping package="com.accenture.aflac.lms.dao.entity">
+
+    <class name="User" table="lms_user" where="deleteStatus=0">
+    	<id name="id">
+    	    <generator class="native"/>
+    	</id>
+
+        <property name="eid" unique="true"/>
+        <property name="realName"/>
+        <property name="password"/>
+        <property name="role"/>
+        <property name="tel"/>
+        <property name="borrowedCount"/>
+        <property name="projectName"/>
+        <property name="borrowCountLimit"/>
+        
+        <property name="createUser"/>
+        <property name="createTime" type="date"/>
+        <property name="updateUser"/>
+        <property name="updateTime" type="date"/>
+        <property name="deleteStatus"/>
+        
+    
+    </class>
+    
+</hibernate-mapping>

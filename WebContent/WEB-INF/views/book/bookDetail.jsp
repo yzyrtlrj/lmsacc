@@ -26,49 +26,49 @@ body{
 		    <table style="text-align: right;line-height: 30px;">
 		        <tr>
 		            <td>书籍索引号:</td>
-		            <td> <s:property value="book.indexNum"/></td>
+		            <td><s:property value="model.indexNum"/></td>
 		        </tr>
 		        <tr>
 		            <td>书名:</td>
-		            <td> <s:property value="book.bookName"/></td>
+		            <td><s:property value="model.bookName"/></td>
 		        </tr>
 		        <tr>
 		            <td>ISBN:</td>
-		            <td> <s:property value="book.isbn"/></td>
+		            <td><s:property value="model.isbn"/></td>
 		        </tr>
 		        <tr>
 		            <td>作者:</td>
-		            <td> <s:property value="book.author"/></td>
+		            <td><s:property value="model.author"/></td>
 		        </tr>
 		        <tr>
 		            <td>价格:</td>
-		            <td> <s:property value="book.price"/></td>
+		            <td><s:property value="model.price"/></td>
 		        </tr>
 		        <tr>
 		            <td>类别:</td>
-		            <td> <s:property value="book.catagory.catagoryName"/></td>
+		            <td><s:property value="model.categoryName"/></td>
 		        </tr>
 		        <tr>
 		            <td>出版社:</td>
-		            <td> <s:property value="book.press"/></td>
+		            <td><s:property value="model.press"/></td>
 		        </tr>
 		        <tr>
 		            <td>图片:</td>
-		            <td> <img alt="图片无法显示" src="resources/<s:property value='book.bookPicturePath'/>"></td>
+		            <td> <img alt="图片无法显示" src="${pageContext.request.contextPath}/resources/<s:property value='model.bookPicturePath'/>"></td>
 		        </tr>
 		        <tr>
 		            <td>出版日期:</td>
-		            <td> <s:property value="book.publishDate"/></td>
+		            <td><s:property value="model.publishDate"/></td>
 		        </tr>    
 		        <tr>
 		            <td>图书借阅人:</td>
-		            
+		            <td><s:property value="bookOwner.eid"/></td>
 		        </tr>      
 		    </table>
 	    </div>
 	    <div style="margin-left: 100px;float: left;width: 400px;height: 100%;">
 	    	简介:<br>
-	    	<p style="line-height: 30px;">&nbsp;&nbsp;<s:property value="book.summary"/></p> 
+	    	<p style="line-height: 30px;">&nbsp;&nbsp;<s:property value="model.summary"/></p> 
 	    </div>
 	</div>
 </body>

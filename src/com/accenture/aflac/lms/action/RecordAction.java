@@ -1,171 +1,156 @@
 package com.accenture.aflac.lms.action;
 
-import java.sql.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
-import org.apache.struts2.interceptor.RequestAware;
-import org.apache.struts2.interceptor.SessionAware;
+import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
-import com.accenture.aflac.lms.common.PaginationUtil;
 import com.accenture.aflac.lms.dao.entity.Book;
 import com.accenture.aflac.lms.dao.entity.Record;
 import com.accenture.aflac.lms.dao.entity.User;
-import com.accenture.aflac.lms.dao.vo.Pagination;
 import com.accenture.aflac.lms.service.BookService;
 import com.accenture.aflac.lms.service.RecordService;
+import com.accenture.aflac.lms.service.UserService;
+import com.accenture.aflac.lms.util.PageBean;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
+@Controller
+@Scope("prototype")
+public class RecordAction extends ActionSupport implements ModelDriven<Record>{
+	//模型驱动使用的对象
+	private Record record=new Record();
 
-public class RecordAction extends ActionSupport implements SessionAware,RequestAware{
+	@Override
+	public Record getModel() {
+		// TODO Auto-generated method stub
+		return record;
+	}
 	
-    private Map<String, Object> session;
-	
-	private Map<String, Object> request;
-	
+	//注入RecordService
+	@Autowired
 	private RecordService recordService;
 	
-	private BookService bookService;
-	
-	private Record record;
-	
-	private Pagination pagination=new Pagination();
-
-	@Override
-	public void setRequest(Map<String, Object> request) {
-		// TODO Auto-generated method stub
-		this.request=request;
-	}
-
-	@Override
-	public void setSession(Map<String, Object> session) {
-		// TODO Auto-generated method stub
-		this.session=session;
-	}
-
 	public void setRecordService(RecordService recordService) {
 		this.recordService = recordService;
 	}
-
+	
+	//注入BookService
+	@Autowired
+	private BookService bookService;
+	
 	public void setBookService(BookService bookService) {
 		this.bookService = bookService;
 	}
-
-	public Record getRecord() {
-		return record;
-	}
-
-	public void setRecord(Record record) {
-		this.record = record;
-	}
 	
-	public Pagination getPagination() {
-		return pagination;
+	//接收当前页数
+	private int page;
+	
+	public void setPage(int page) {
+		this.page = page;
 	}
 
-	public void setPagination(Pagination pagination) {
-		this.pagination = pagination;
-	}
-	
-	//クリック　→  "申请借阅"
+	//借阅图书
 	public String borrowBook(){
-		//?????
-		if(record.getBook()==null){
-			return ERROR;
-		}
-		Book book=bookService.findById(record.getBook().getIndexNum());
-		//将图书表中书的状态设置为"已借出"
-		book.setBookStatus("已借出");
-		record.setBook(book);
-		record.setBorrowDate(new Date((new java.util.Date()).getTime()));
-		//设置还书截止日期为当前时间加30天
-		record.setEffectiveDate(new Date(new java.util.Date().getTime()-30*24*60*60*1000));
-		//将记录表中书的状态设置为"申请借阅中"
-		record.setBorrowStatus("申请借阅中");
-		User user=(User) session.get("userinfo");
-		record.setUser(user);
-		//记录创建时间
-		record.setCreateDate(new Date((new java.util.Date()).getTime()));
-		//记录创建者
-		record.setCreateUser(user.getEid());
-		int i=recordService.add(record);
-		if (i>0) {
-			return SUCCESS;
-		}else{
-			return ERROR;
-		}
+		record.setUser(getUser());
+		recordService.save(record);
+		//将借阅书籍的状态修改为不可借
+		Book book=bookService.findById(record.getBook().getId());
+		book.setBookStatus("不可借");
+		//记录更新数据时间
+		book.setUpdateTime(new Date());
+		//记录更新数据的人
+		book.setUpdateUser(getUser().getEid());
+		bookService.update(book);
+		return "borrowBook";
 	}
-	//2017.1.4 修正 jiaojiao.xiao
-	//修改当前借阅者记录和前一借阅者记录,クリック　→ "已借阅"
+	
+	//我的借阅记录
+	public String personRecord(){
+		Long userId=((User)ServletActionContext.getRequest().getSession().getAttribute("userinfo")).getId();
+		PageBean<Record> pageBean=recordService.findByUserIdAndPage(userId,page);
+		//将pageBean存放到值栈中
+		ActionContext.getContext().getValueStack().set("pageBean", pageBean);
+		return "personRecord";
+	}
+	
+	//确认成功借书，此时将上一个借书人的记录状态变成"已读完"
 	public String borrowSuccessConfirm(){
-		//修改前一借阅者记录表的借阅状态
-		Record beforeRecord = recordService.findRecordByBookNumAndBorrowStatus(record);
-		if(beforeRecord!=null){
-			beforeRecord.setBorrowStatus("已归还");
-			recordService.update(beforeRecord);
-		}
-		//修改当前借阅者记录
-		record=recordService.findById(record.getId());			//!
-		User user=(User) session.get("userinfo");
-		record.setUser(user);
-		Book book=bookService.findById(record.getBook().getIndexNum());
-		record.setBook(book);
-		//将记录表中书的状态设置为"阅读中"
-		record.setBorrowStatus("阅读中");
-		//记录更新的时间
-		record.setUpdateDate(new Date((new java.util.Date()).getTime()));
-		//记录更新者
-		record.setUpdateUser(user.getEid());
-		int i=recordService.update(record);
-		if(i>0){
-			return SUCCESS;
-		}else{
-			return ERROR;
-		}
-	}
-	
-	//クリック　→　"已读完"
-	public String returnBook(){
+		//根据主键获得数据库中的那条记录
 		record=recordService.findById(record.getId());
-		User user=(User) session.get("userinfo");
-		record.setUser(user);
-		Book book=bookService.findById(record.getBook().getIndexNum());
-		//将图书表中书的状态设置为"可借"
-		book.setBookStatus("可借");
-		record.setBook(book);
-		record.setBorrowStatus("已读完");
-		//记录实际还书日期
-		record.setReturnDate(new Date((new java.util.Date()).getTime()));
-		//记录更新的时间
-		record.setUpdateDate(new Date((new java.util.Date()).getTime()));
-		//记录更新者
-		record.setUpdateUser(user.getEid());
-		int i=recordService.update(record);
-		if(i>0){
-			return SUCCESS;
-		}else{
-			return ERROR;
+	    //将该条记录的状态改成"阅读中"
+		record.setBorrowStatus("阅读中");
+		//记录更新数据时间
+		record.setUpdateTime(new Date());
+		//记录更新数据的人
+		record.setUpdateUser(getUser().getEid());
+		//更新记录
+		recordService.update(record);
+		//根据bookId和记录状态为"待归还"查询上一个借书人
+		record=recordService.findByBookIdAndBorrowStatus(record.getBook().getId(),"待归还");
+		if(record!=null){
+			//即上一个未确认归还图书的人存在
+			//将该条记录的状态改成"已归还"
+			record.setBorrowStatus("已归还");
+			//记录更新数据时间
+			record.setUpdateTime(new Date());
+			//记录更新数据的人
+			record.setUpdateUser(getUser().getEid());
+			//更新记录
+			recordService.update(record);
 		}
+		return "borrowSuccessConfirm";
 	}
 	
-	//个人借阅记录
-	public String personalRecordList(){
-		User user=(User) session.get("userinfo");
-		record=new Record();
-		record.setUser(user);
-		pagination.setCount(recordService.countRows(record));
-		PaginationUtil.execute(pagination);
-		List<Record> recordList=recordService.findByUser(record, pagination);
-		request.put("recordList", recordList);
-		return SUCCESS;
+	//归还图书
+	public String returnBook(){
+		//根据主键获得数据库中的那条记录
+		record=recordService.findById(record.getId());
+	    //将该条记录的状态改成"待归还"
+		record.setBorrowStatus("待归还");
+		//记录书籍归还时间
+		record.setReturnDate(new Date());
+		//记录更新数据时间
+		record.setUpdateTime(new Date());
+		//记录更新数据的人
+		record.setUpdateUser(getUser().getEid());
+		//更新记录
+		recordService.update(record);
+		
+		//将归还书籍的状态修改为可借
+		Book book=bookService.findById(record.getBook().getId());
+		book.setBookStatus("可借");
+		//记录更新数据时间
+		book.setUpdateTime(new Date());
+		//记录更新数据的人
+		book.setUpdateUser(getUser().getEid());
+		bookService.update(book);
+		return "returnBook";
 	}
 	
-	//所有人的借阅记录
-	public String RecordList(){
-		pagination.setCount(recordService.countRows());
-		PaginationUtil.execute(pagination);
-		List<Record> recordList=recordService.findAll(pagination);
-		request.put("recordList", recordList);
-		return SUCCESS;
+	//用户申请续借一次
+	public String renew(){
+		//根据主键获得数据库中的那条记录
+		record=recordService.findById(record.getId());
+		//将借阅记录的renewStatus值设置为1
+		record.setRenewStatus(1);
+		//将借阅记录中归还图书的日期往后延长一个周期
+		record.setEffectiveDate(new Date(record.getEffectiveDate().getTime()+1000*60*60*24*30));
+		//记录更新数据时间
+		record.setUpdateTime(new Date());
+		//记录更新数据的人
+		record.setUpdateUser(getUser().getEid());
+		recordService.update(record);
+		return "renew";
 	}
+	
+	//从session中获取当前用户
+	private User getUser(){
+		return (User)ServletActionContext.getRequest().getSession().getAttribute("userinfo");
+	}
+	
+	
 
 }

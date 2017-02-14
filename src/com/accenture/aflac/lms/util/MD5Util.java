@@ -1,4 +1,4 @@
-package com.accenture.aflac.lms.common;
+package com.accenture.aflac.lms.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -20,5 +20,6 @@ public class MD5Util {
 		}
 		return null;
 	}
+	
 
 }

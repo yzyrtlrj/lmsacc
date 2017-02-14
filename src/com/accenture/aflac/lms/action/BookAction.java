@@ -1,187 +1,73 @@
 package com.accenture.aflac.lms.action;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.interceptor.RequestAware;
-import org.apache.struts2.interceptor.SessionAware;
-
-import com.accenture.aflac.lms.common.PaginationUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 import com.accenture.aflac.lms.dao.entity.Book;
 import com.accenture.aflac.lms.dao.entity.User;
-import com.accenture.aflac.lms.dao.vo.Pagination;
 import com.accenture.aflac.lms.service.BookService;
+import com.accenture.aflac.lms.service.UserService;
+import com.accenture.aflac.lms.util.PageBean;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-
-public class BookAction extends ActionSupport implements SessionAware,RequestAware{
-	
-	private Map<String, Object> session;
-	
-	private Map<String, Object> request;
-	
-	private BookService bookService;
-	
-	private Book book;
-	
-	private Pagination pagination=new Pagination(); 
-	
-	private File uploadImage;// 得到上传的文件
-	private String uploadImageContentType;// 得到文件的类型
-	private String uploadImageFileName;// 得到文件的名称
+import com.opensymphony.xwork2.ModelDriven;
+@Controller
+@Scope("prototype")
+public class BookAction extends ActionSupport implements ModelDriven<Book>{
+	//模型驱动使用的对象
+	private Book book=new Book();
 
 	@Override
-	public void setRequest(Map<String, Object> request) {
+	public Book getModel() {
 		// TODO Auto-generated method stub
-		this.request=request;
-	}
-
-	@Override
-	public void setSession(Map<String, Object> session) {
-		// TODO Auto-generated method stub
-		this.session=session;
-	}
-
-	public void setBookService(BookService bookService) {
-		this.bookService = bookService;
-	}
-
-	public Book getBook() {
 		return book;
 	}
-
-	public void setBook(Book book) {
-		this.book = book;
+	
+	//注入BookService
+	@Autowired
+	private BookService bookService;
+	
+	//接收当前页数
+	private int page;
+	
+	public void setPage(int page) {
+		this.page = page;
 	}
 	
-	public Pagination getPagination() {
-		return pagination;
+	//注入UserService
+	@Autowired
+	private UserService userService;
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
-	public void setPagination(Pagination pagination) {
-		this.pagination = pagination;
-	}
-	
-	public File getUploadImage() {
-		return uploadImage;
-	}
-
-	public void setUploadImage(File uploadImage) {
-		this.uploadImage = uploadImage;
-	}
-
-	public String getUploadImageContentType() {
-		return uploadImageContentType;
-	}
-
-	public void setUploadImageContentType(String uploadImageContentType) {
-		this.uploadImageContentType = uploadImageContentType;
-	}
-
-	public String getUploadImageFileName() {
-		return uploadImageFileName;
-	}
-
-	public void setUploadImageFileName(String uploadImageFileName) {
-		this.uploadImageFileName = uploadImageFileName;
-	}
-
-
-	public String bookList(){
-		//从数据库中取出所有图书分类存在request域中，供页面按分类查询图书时使用
-		List<String> catagoryList=bookService.findALLCatagory();
-		request.put("catagoryList", catagoryList);
-		pagination.setCount(bookService.countRows());
-		PaginationUtil.execute(pagination);
-		List<Book> bookList=bookService.findAll(pagination);
-		request.put("bookList", bookList);
+	//图书列表，带分页
+	public String list(){
+		//尝试从session中获得categoryList，除第一次要从数据库中查询外其他时候可从session中获取
+		List<String> categoryList=(List<String>) ServletActionContext.
+				getRequest().getSession().getAttribute("categoryList");
+		if(categoryList==null){
+			//查询所有书籍的分类，并存放到session中
+		    categoryList=bookService.findAllCategory();
+			ServletActionContext.getRequest().getSession().setAttribute("categoryList", categoryList);
+		}
+		PageBean<Book> pageBean=bookService.findByPage(page);
+		//将pageBean存放到值栈中
+		ActionContext.getContext().getValueStack().set("pageBean", pageBean);
 		return "bookList";
 	}
 	
-	public String bookDetail(){
-		book=bookService.findById(book.getIndexNum());
-		return SUCCESS;
-	}
-	
-	public String searchBook(){
-		List<String> catagoryList=bookService.findALLCatagory();
-		request.put("catagoryList", catagoryList);
-		pagination.setCount(bookService.countRows());
-		PaginationUtil.execute(pagination);
-		List<Book> bookList=bookService.searchByCondition(book,pagination);
-		request.put("bookList", bookList);
-		return SUCCESS;
-	}
-	
-	public String addBookInput(){
-		return SUCCESS;
-	}
-	public String addBook(){
-		String realpath = ServletActionContext.getServletContext().getRealPath("/resource/images");
-		File file = new File(realpath);
-		if (!file.exists()) {
-			file.mkdirs();
-		}
-		try {
-			FileUtils
-					.copyFile(uploadImage, new File(file, uploadImageFileName));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// 设置上传后文件的文件路径
-		book.setBookPicturePath("/resource/images/" + uploadImageFileName);
-		book.setCreateDate(new Date((new java.util.Date().getTime())));
-		User user=(User) session.get("userinfo");
-		book.setCreateUser(user.getEid());
-		int i = bookService.add(book);
-		if(i>0){
-			
-			return SUCCESS;
-		}else{
-			return ERROR;
-		}
-		
-	}
-	
-	public String deleteBook(){
-		book=bookService.findById(book.getIndexNum());
-		int i = bookService.delete(book);
-		if(i>0){
-			
-			return SUCCESS;
-		}else{
-			return ERROR;
-		}
-		
-	}
-	
-	public String updateBookInput(){
-		book=bookService.findById(book.getIndexNum());
-		return SUCCESS;
-	}
-	
-	public String updateBook(){
-		int i = bookService.update(book);
-		if(i>0){
-			
-			return SUCCESS;
-		}else{
-			return ERROR;
-		}
-	}
-	
-	//2017.1.4 修正 jiaojiao.xiao
-	public String updateBookStatus(){
-		int i = bookService.update(book);
-		if(i>0){
-			return SUCCESS;
-		}else{
-			return ERROR;
-		}
+	public String detail(){
+		//根据主键查询书籍
+		book=bookService.findById(book.getId());
+		//根据书的ID和借阅状态为"阅读中"或"待归还"查询书籍当前拥有人
+		User bookOwner=userService.findByBookIdAndBorrowStatus(book.getId(),"阅读中","待归还");
+		//将书籍的拥有者封装到值栈中
+		ActionContext.getContext().getValueStack().set("bookOwner", bookOwner);
+		return "bookDetail";
 	}
 }

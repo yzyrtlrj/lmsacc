@@ -9,8 +9,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<link rel="stylesheet" href="../resources/css/common.css" />
-	<link rel="stylesheet" href="../resources/css/list.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/list.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<base href="<%=basePath%>">
 	<title>reocrdList</title>
@@ -37,12 +37,12 @@
 				<th>借阅截止日期</th>
 				<th>借阅状态</th>
 				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<%int i = 1; %>
-			<s:if test="#request.recordList!=null">
-				<s:iterator value="#request.recordList" var="record">
+				<s:iterator value="pageBean.list" var="record">
 					<tr>
 						<td><%=i %></td>
 						<td><s:property value="#record.book.indexNum"/></td>
@@ -53,12 +53,12 @@
 						<td><s:property value="#record.borrowStatus"/></td>
 						<td>
 							<s:if test="#record.borrowStatus=='申请借阅中'">
-							 	 <a onclick="confirm('确认已经拿到书了吗？')" href="record/borrowSuccessConfirm?record.id=<s:property value='#record.id'/>">
+							 	 <a onclick="confirm('确认已经拿到书了吗？')" href="${pageContext.request.contextPath}/record_borrowSuccessConfirm.action?id=<s:property value='#record.id'/>">
 									已借阅
 								 </a>
 							</s:if>
 							<s:if test="#record.borrowStatus=='阅读中'">
-								<a href="record/returnBook?record.id=<s:property value='#record.id'/>">
+								<a href="record_returnBook.action?id=<s:property value='#record.id'/>">
 									已读完
 								</a>		
 							</s:if> 
@@ -66,15 +66,22 @@
 									已读完	
 							</s:if> 
 						</td>
+						<td>
+						<s:if test="#record.renewStatus==1">
+							<a href="#">申请续借</a>
+						</s:if>
+						<s:else>
+						    <a href="${pageContext.request.contextPath}/record_renew.action?id=<s:property value='#record.id'/>">申请续借</a>
+						</s:else>
+						</td>
 					</tr>
 					<%i++; %>
 				</s:iterator>
-			</s:if>
 		</tbody>
 	</table>
 	
 	<!-- 分页 -->
-	<div class="pagination">
+	<%-- <div class="pagination">
 	<s:if test="#session.userinfo.role=='admin'">
 	    <s:if test="pagination.currentPage!=1">
 	        <a href="record/RecordList?pagination.currentPage=<s:property value='pagination.currentPage-1'/>">上一页</a>
@@ -100,6 +107,6 @@
 	    
     </s:if>
        	 当前页：<s:property value="pagination.currentPage"/>页 / <s:property value="pagination.totalPage"/>页
-	</div>
+	</div> --%>
 </body>
 </html>

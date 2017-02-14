@@ -1,32 +1,54 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC
-	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
-	"http://struts.apache.org/dtds/struts-2.5.dtd">
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
 
 <struts>
 
     <constant name="struts.devMode" value="false" />
-    <constant name="struts.action.extension" value="action,," />
-
-    <constant name="struts.convention.result.path" value="/WEB-INF" />
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
     <constant name="struts.objectFactory" value="spring"/>
     
     <package name="default" namespace="/" extends="struts-default">
     
+        <default-action-ref name="user_loginPage"/>
+        
         <global-results>
-            <result name="error">/404.jsp</result>
+            <result name="login">/WEB-INF/views/user/userLogin.jsp</result>
         </global-results>
         
-    
+        <!-- 关键地方  struts2.5 为了提升安全性，添加了 allomethod 这么个玩意(使用通配符时用)-->
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        
+        
+        <!-- 用户模块的Action -->
+        <action name="user_*" class="userAction" method="{1}">
+        	<result name="loginPage">/WEB-INF/views/user/userLogin.jsp</result>
+       	    <result name="loginSuccess">/WEB-INF/views/common/Manage.jsp</result>  
+               
+        </action>
+        
+        <!-- 图书模块的Action -->
+        <action name="book_*" class="bookAction" method="{1}">
+        	<result name="bookList">/WEB-INF/views/book/bookList.jsp</result>
+        	<result name="bookDetail">/WEB-INF/views/book/bookDetail.jsp</result>
+        </action>
+        
+        <!-- 借阅记录模块的Action -->
+        <action name="record_*" class="recordAction" method="{1}">
+            <result name="borrowBook" type="chain">book_list</result>
+            <result name="personRecord">/WEB-INF/views/record/myRecordList.jsp</result>
+            <result name="borrowSuccessConfirm" type="chain">record_personRecord</result>
+            <result name="returnBook" type="chain">record_personRecord</result>
+            <result name="renew" type="chain">record_personRecord</result>
+        </action>
+        
+        <!-- 管理员功能特有的模块 -->
+        <action name="admin_*" class="adminAction" method="{1}">
+            <result name="loginSuccess">/WEB-INF/views/common/AdminManage.jsp</result>
+        </action>
+        
+        
     </package>
-
-   
-    <include file="../config/struts/struts-user.xml"/>
-    <include file="../config/struts/struts-book.xml"/>
-    <include file="../config/struts/struts-record.xml"/>
     
-
 </struts>
-
-

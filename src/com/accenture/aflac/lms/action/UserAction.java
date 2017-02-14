@@ -1,162 +1,63 @@
 package com.accenture.aflac.lms.action;
 
-import java.sql.Date;
-import java.util.List;
-import java.util.Map;
+import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
-import org.apache.struts2.interceptor.RequestAware;
-import org.apache.struts2.interceptor.SessionAware;
-
-import com.accenture.aflac.lms.common.PaginationUtil;
-import com.accenture.aflac.lms.dao.entity.Record;
 import com.accenture.aflac.lms.dao.entity.User;
-import com.accenture.aflac.lms.dao.vo.Pagination;
 import com.accenture.aflac.lms.service.UserService;
+import com.accenture.aflac.lms.util.MD5Util;
 import com.opensymphony.xwork2.ActionSupport;
-
-public class UserAction extends ActionSupport implements SessionAware,RequestAware{
-
-	private Map<String, Object> session;
+import com.opensymphony.xwork2.ModelDriven;
+@Controller
+@Scope("prototype")
+public class UserAction extends ActionSupport implements ModelDriven<User>{
+	//模型驱动使用的对象
+	private User user=new User();
 	
-	private Map<String, Object> request;
+	@Override
+	public User getModel() {
+		// TODO Auto-generated method stub
+		return user;
+	}
 	
+	//注入UserService
+	@Autowired
 	private UserService userService;
-	
-	private User user;
-	
-	private Record record;
-	
-	private Pagination pagination=new Pagination();
-
-	@Override
-	public void setRequest(Map<String, Object> request) {
-		// TODO Auto-generated method stub
-		this.request=request;
-	}
-
-	@Override
-	public void setSession(Map<String, Object> session) {
-		// TODO Auto-generated method stub
-		this.session=session;
-	}
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
-
-	public User getUser() {
-		return user;
+	
+	//跳转到登录用户界面
+	public String loginPage(){
+		return "loginPage";
 	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-		
-	public Record getRecord() {
-		return record;
-	}
-
-	public void setRecord(Record record) {
-		this.record = record;
-	}
-
-	public Pagination getPagination() {
-		return pagination;
-	}
-
-	public void setPagination(Pagination pagination) {
-		this.pagination = pagination;
-	}
-
-	//用户登录
+	
+	//用户登录的方法
 	public String login(){
-		//如果用户或用户eid为空，则直接返回failure
-		if(user==null || user.getEid()==null)
-			return "failure";
-		User user2=userService.validateUserLogin(user);
-		if(user2==null){
-			return "failure";
-		}
-		session.put("userinfo", user2);
-		return SUCCESS;
-	}
-	
-	//用户注销登录
-	public String logoff(){
-		session.remove("userinfo");
-		return SUCCESS;
-	}
-	
-	//查看用户详情
-	public String userDetail(){
-		user=userService.findById(user.getId());
-		return SUCCESS;
-	}
-	
-	//列出所有满足指定条件的用户，考虑分页显示
-	public String userList(){
-		pagination.setCount(userService.countRows());
-		PaginationUtil.execute(pagination);
-		List<User> allUsers = userService.findAll(pagination);
-		request.put("userList", allUsers);
-		return SUCCESS;
-	}
-	
-	//忘记密码
-	public String forgetPassword(){
-		return SUCCESS;
-	}
-	
-	public String addUserInput(){
-		return SUCCESS;
-	}
-	
-	//添加用戶
-	public String addUser(){
-		user.setCreateDate(new Date((new java.util.Date().getTime())));
-		user.setCreateUser(user.getEid());
-		int i = userService.add(user);
-		if (i>0) {
-			return SUCCESS;
+		//对用户的密码进行加密与数据库比较
+		user.setPassword(MD5Util.encoderToMD5(user.getPassword()));
+		//调用业务层用户登录的方法
+		user=userService.login(user);
+		if(user!=null){
+			//登录成功
+			ServletActionContext.getRequest().getSession().setAttribute("userinfo", user);
+			return "loginSuccess";
 		}else{
-			return ERROR;
+			//登录失败
+			return LOGIN;
 		}
 		
 	}
 	
-	//刪除用戶
-	public String deleteUser(){
-		user=userService.findById(user.getId());
-		int i = userService.delete(user);
-		if (i>0) {
-			return SUCCESS;
-		}else{
-			return ERROR;
-		}
+	//用户注销
+	public String logout(){
+		//销毁session
+		ServletActionContext.getRequest().getSession().invalidate();
+		return LOGIN;
 	}
-	
-	public String updateUserInput(){
-		user=userService.findById(user.getId());
-		return SUCCESS;
-	}
-	
-	//修改用戶
-	public String updateUser(){	
-		int i = userService.update(user);
-		if (i>0) {
-			return SUCCESS;
-		}else{
-			return ERROR;
-		}
-	}
-	
-	//按圖書索引號查找用戶
-    public String selectUserByBookIndex(){
-		List<User> users = userService.findUserByBookIndexNum(record);
-		request.put("users", users);
-		return SUCCESS;
-	}
-
 	
 	
 

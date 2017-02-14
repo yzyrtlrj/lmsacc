@@ -14,6 +14,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<base href="<%=basePath%>">
 	<title>userLogin</title>
+<script type="text/javascript">
+    function beforeLogin() {
+		var role=document.getElementsById("role").value;
+		alert(role);
+	}
+</script>
 </head>
 <body>
 	<div id="container">
@@ -23,18 +29,27 @@
 		</div>
 		<div id="main">
 					<div class="main_nav"><h2>Login</h2></div>
-					<form action="user/login" method="post">	
+					<form action="${pageContext.request.contextPath}/user_login.action" method="post">	
 						<table align="center" border="0" style="border:1px solid #000000;">
 							<tr>
 								<td colspan="2">
-									<s:textfield name="user.eid" label="用户名" />
-									<s:password name="user.password" label="密 码" />
+									<s:textfield name="eid" label="用户名" />
+									<s:password name="password" label="密 码" />
 								</td>	
+							</tr>
+							<tr colspan="2">
+							    <td>
+							        <select name="role" id="role">
+									    <option value="normal">普通用户</option>
+									    <option value="admin">管理员</option>
+									</select>
+							    </td>
 							</tr>
 							<tr>
 								<td colspan="2">
-									<input type="submit" value="Login" class="btu"/>
+									<input type="submit" value="Login" class="btu" onclick="beforeLogin()"/>
 									<s:reset value="Reset" style="width:70px;"/>
+									
 								</td>
 							</tr>
 							<tr>

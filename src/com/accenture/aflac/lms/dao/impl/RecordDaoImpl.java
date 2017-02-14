@@ -1,67 +1,65 @@
 package com.accenture.aflac.lms.dao.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.accenture.aflac.lms.dao.BaseDao;
 import com.accenture.aflac.lms.dao.RecordDao;
-import com.accenture.aflac.lms.dao.entity.Book;
 import com.accenture.aflac.lms.dao.entity.Record;
+import com.accenture.aflac.lms.util.PageHibernateCallback;
+@Repository
+public class RecordDaoImpl extends BaseDaoImpl<Record> implements RecordDao{
+	
+	//注入sessionFactory
+	@Autowired
+	public void setSuperSessionFactory(SessionFactory sessionFactory){
+		super.setSessionFactory(sessionFactory);
+	}
 
-public class RecordDaoImpl extends BaseDaoImpl<Record, Long> implements RecordDao{
-
+	//DAO层添加记录
 	@Override
-	public int countRows(Record record) {
-		StringBuffer hql=new StringBuffer();
-		hql.append("select count(*) from Record r");
-		if(record!=null){
-			hql.append(" where r.user.id="+record.getUser().getId());
-		}
-		List<Long> result=(List<Long>) this.getHibernateTemplate().find(hql.toString(), null);
-		if(result!=null){
-			return result.get(0).intValue();
+	public void save(Record record) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().save(record);
+	}
+
+	//DAO层根据userId统计记录数
+	@Override
+	public int countRowsByUserId(Long userId) {
+		// TODO Auto-generated method stub
+		String hql="select count(*) from Record r where r.user.id=?";
+		List<Long> list=(List<Long>) this.getHibernateTemplate().find(hql, userId);
+		if(list!=null && list.size()>0){
+			return list.get(0).intValue();
 		}
 		return 0;
 	}
 
+	//DAO层根据userId获得记录集合并分页
 	@Override
-	public List<Record> findAll(Record record, int offset, int length) {
+	public List<Record> findByUserIdAndPage(Long userId, int begin, int limit) {
 		// TODO Auto-generated method stub
-		DetachedCriteria criteria=DetachedCriteria.forClass(clazz).add(Restrictions.eq( "deleteStatus", new Integer(0)));
-		if(record!=null){
-			if(record.getUser()!=null && record.getUser().getId()!=null){
-				criteria.add(Restrictions.eq("user.id",record.getUser().getId()));
-			}
-			if(record.getBook()!=null && record.getBook().getIndexNum()!=null){
-				criteria.add(Restrictions.eq("book.indexNum",record.getBook().getIndexNum()));
-			}
+		String hql="from Record r where r.user.id=?";
+		List<Record> list=this.getHibernateTemplate().execute(new PageHibernateCallback<Record>(hql, new Object[]{userId}, begin, limit));
+		if(list!=null && list.size()>0){
+			return list;
 		}
-		return (List<Record>)this.getHibernateTemplate().findByCriteria(criteria, offset, length);
-
-	}
-	
-	//2017.1.4 修正 jiaojiao.xiao
-	@Override
-	public Record findRecordByBookNumAndBorrowStatus(Record record) {
-		// TODO Auto-generated method stub
-		record = this.findById(record.getId());
-		StringBuffer hql=new StringBuffer();
-		hql.append("select r from Record r");
-		if(record!=null){
-			Object[] param = {"已读完"};
-			hql.append(" where r.borrowStatus=?"+" and r.book.indexNum="+record.getBook().getIndexNum());
-			List<Record> beforeRecord =(List<Record>) this.getHibernateTemplate().find(hql.toString(), param);
-			if(beforeRecord!=null && beforeRecord.size()==1){
-				return beforeRecord.get(0);
-			}
-		}	
 		return null;
 	}
-	
-	
+
+	//DAO层根据bookId和borrowStatus查询记录
+	@Override
+	public Record findByBookIdAndBorrowStatus(Long id, String borrowStatus) {
+		// TODO Auto-generated method stub
+		String hql="from Record r where r.book.id=? and r.borrowStatus=?";
+		List<Record> list=(List<Record>) this.getHibernateTemplate().find(hql, id,borrowStatus);
+		if(list!=null && list.size()>0){
+			return list.get(0);
+		}
+		return null;
+	}
 
 }

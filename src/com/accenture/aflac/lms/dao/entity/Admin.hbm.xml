@@ -4,28 +4,20 @@
     
 <hibernate-mapping package="com.accenture.aflac.lms.dao.entity">
 
-    <class name="Record" table="lms_record" where="deleteStatus=0">
+    <class name="Admin" table="lms_admin">
     	<id name="id">
     	    <generator class="native"/>
     	</id>
-    	
-		<property name="borrowDate" type="date"/>
-		<property name="returnDate" type="date"/>
-		<property name="effectiveDate" type="date"/>
-		<property name="borrowStatus"/>
-		<property name="renewStatus"/>
+
+        <property name="username" update="true"/>
+        <property name="password"/>
+        
         
         <property name="createUser"/>
         <property name="createTime" type="date"/>
         <property name="updateUser"/>
         <property name="updateTime" type="date"/>
         <property name="deleteStatus"/>
-        
-        <!-- 记录与用户是多对一的关系 -->
-        <many-to-one name="user" class="User" column="user_id"/>
-        
-        <!-- 记录与书籍是多对一的关系 -->
-        <many-to-one name="book" class="Book" lazy="false" column="book_id"/>
         
     
     </class>
