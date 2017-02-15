@@ -43,11 +43,6 @@
             <result name="renew" type="chain">record_personRecord</result>
         </action>
         
-        <!-- 管理员功能特有的模块 -->
-        <action name="admin_*" class="adminAction" method="{1}">
-            <result name="loginSuccess">/WEB-INF/views/common/AdminManage.jsp</result>
-        </action>
-        
         
     </package>
     

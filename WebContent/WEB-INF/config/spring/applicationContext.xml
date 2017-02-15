@@ -34,7 +34,6 @@
 				<value>com/accenture/aflac/lms/dao/entity/User.hbm.xml</value>
 				<value>com/accenture/aflac/lms/dao/entity/Book.hbm.xml</value>
 				<value>com/accenture/aflac/lms/dao/entity/Record.hbm.xml</value>
-				<value>com/accenture/aflac/lms/dao/entity/Admin.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
