@@ -1,3 +1,3 @@
-1.ĞŞ¸Ä¡¾11.SetEnv.bat¡¿½Å±¾ÖĞmysqlµÄbinÂ·¾¶
-2.¡¾13.InputObject.bat¡¿µ¼ÈëÊı¾İ¿â
-3.¡¾14.OutputObject.bat¡¿±¸·İÊı¾İ¿â
+ï»¿1.ä¿®æ”¹ã€11.SetEnv.batã€‘è„šæœ¬ä¸­mysqlçš„binè·¯å¾„
+2.ã€13.InputObject.batã€‘å¯¼å…¥æ•°æ®åº“
+3.ã€14.OutputObject.batã€‘å¤‡ä»½æ•°æ®åº“
