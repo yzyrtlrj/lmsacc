@@ -31,6 +31,7 @@
         <!-- 图书模块的Action -->
         <action name="book_*" class="bookAction" method="{1}">
         	<result name="bookList">/WEB-INF/views/book/bookList.jsp</result>
+        	<result name="manageBook">/WEB-INF/views/book/manageBook.jsp</result>
         	<result name="bookDetail">/WEB-INF/views/book/bookDetail.jsp</result>
         </action>
         

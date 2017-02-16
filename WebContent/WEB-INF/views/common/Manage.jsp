@@ -34,7 +34,7 @@
 			<a href="${pageContext.request.contextPath}/book_list.action?page=1" target="myFrame">圖書借閱</a>
 			<s:if test="#session.userinfo.role=='admin'">
 				<a href="user/showAllUsers.action?pagination.currentPage=1" target="myFrame">管理用戶</a>
-				<a href="book/manageBook?pagination.currentPage=1" target="myFrame">管理圖書</a>
+				<a href="${pageContext.request.contextPath}/book_list.action?page=1" target="myFrame">管理圖書</a>
 				<a href="record/RecordList?pagination.currentPage=1" target="myFrame">借閱管理</a>
 			</s:if>
 			<a href="${pageContext.request.contextPath}/record_personRecord.action?Page=1" target="myFrame">我的借阅记录</a>

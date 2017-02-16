@@ -58,6 +58,9 @@ public class BookAction extends ActionSupport implements ModelDriven<Book>{
 		PageBean<Book> pageBean=bookService.findByPage(page);
 		//将pageBean存放到值栈中
 		ActionContext.getContext().getValueStack().set("pageBean", pageBean);
+		if("admin".equals(getUser().getRole())){
+			return "manageBook";
+		}
 		return "bookList";
 	}
 	
@@ -69,5 +72,9 @@ public class BookAction extends ActionSupport implements ModelDriven<Book>{
 		//将书籍的拥有者封装到值栈中
 		ActionContext.getContext().getValueStack().set("bookOwner", bookOwner);
 		return "bookDetail";
+	}
+	
+	private User getUser(){
+		return (User)ServletActionContext.getRequest().getSession().getAttribute("userinfo");
 	}
 }
