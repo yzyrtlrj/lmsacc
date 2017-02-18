@@ -32,8 +32,8 @@
 					<td>根据作者进行查询<input type="text" name="book.author" /></td>
 					<td>根据分类进行查询 <select name="book.catagoryName">
 							<option></option>
-							<s:if test="#request.catagoryList!=null">
-								<s:iterator value="#request.catagoryList" var="catagoryName">
+							<s:if test="#session.catagoryList!=null">
+								<s:iterator value="#session.catagoryList" var="catagoryName">
 									<option value="<s:property value="#catagoryName"/>"><s:property
 											value="#catagoryName" /></option>
 								</s:iterator>
@@ -65,38 +65,36 @@
 		</thead>
 		<tbody>
 		<%int i = 1; %>
-			<s:if test="#request.bookList!=null">
-				<s:iterator value="#request.bookList" var="book">
-					<tr>
-						<td><%=i %></td>
-						<td><s:property value="#book.indexNum" /></td>
-						<td><s:property value="#book.bookName" /></td>
-						<td><s:property value="#book.author" /></td>
-						<td><s:property value="#book.press" /></td>
-						<td><s:property value="#book.publishDate" /></td>
-						<td><s:property value="#book.bookStatus" /></td>
-						<td>
-		                    <a 
-		                    	href="book/bookDetail?book.indexNum=<s:property value='#book.indexNum'/>">详情
-		                    </a>
-                    
-                		</td>
-		                <td>
-		                    <a 
-		                    	href="book/updateBookInput?book.indexNum=<s:property value='#book.indexNum'/>">修改
-		                    </a>
-		                    
-		                </td>
-		                <td>
-		                    <a 
-		                    	href="book/deleteBook?book.indexNum=<s:property value='#book.indexNum'/>">删除
-		                    </a>
-		                    
-		                </td>
-					</tr>
+			<s:iterator value="pageBean.list" var="book">
+				<tr>
+					<td><%=i %></td>
+					<td><s:property value="#book.indexNum" /></td>
+					<td><s:property value="#book.bookName" /></td>
+					<td><s:property value="#book.author" /></td>
+					<td><s:property value="#book.press" /></td>
+					<td><s:property value="#book.publishDate" /></td>
+					<td><s:property value="#book.bookStatus" /></td>
+					<td>
+	                    <a 
+	                    	href="book/bookDetail?book.indexNum=<s:property value='#book.indexNum'/>">详情
+	                    </a>
+                   
+               		</td>
+	                <td>
+	                    <a 
+	                    	href="book/updateBookInput?book.indexNum=<s:property value='#book.indexNum'/>">修改
+	                    </a>
+	                    
+	                </td>
+	                <td>
+	                    <a 
+	                    	href="book/deleteBook?book.indexNum=<s:property value='#book.indexNum'/>">删除
+	                    </a>
+	                    
+	                </td>
+				</tr>
 					<%i++; %>
-				</s:iterator>
-			</s:if>
+			</s:iterator>
 		</tbody>
 	</table>
 	
