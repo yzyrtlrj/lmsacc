@@ -27,21 +27,23 @@
 		<form action="${pageContext.request.contextPath}/book_searchBook.action?page=1">
 			<table>
 				<tr>
-					<td>根据书名进行查询<input type="text" name="bookName" /></td>
-					<td>根据分类进行查询 <select name="categoryName">
+					<td>根据分类查询 <select name="categoryName">
 							<option></option>
 							<s:if test="#session.categoryList!=null">
 								<s:iterator value="#session.categoryList" var="categoryName">
 								    <!-- 下面这句默认选中即selected还没有经过测试，需要完成分页功能后再测试一次 -->
-									<option value="<s:property value="#categoryName"/>" <s:if test="model.categoryName=#category">selected</s:if>>
+									<option value="<s:property value="#categoryName"/>" name="categoryName"
+										<s:if test="model.categoryName=#category">selected</s:if>>
 										<s:property value="#categoryName"/>
 									</option>
 								</s:iterator>
 							</s:if>
 					</select>
 					</td>
-					<td>根据书籍索引号进行查询<input type="text" name="indexNum" /></td>
-					<td><input type="submit" value="开始查询" class="search" /></td>
+					<td>根据书名查询<input type="text" name="bookName" /></td>
+					<td>根据作者查询<input type="text" name="author" /></td>
+					<td>根据出版社查询<input type="text" name="press" /></td>
+					<td><input type="submit" value="开始查询" class="search"/></td>
 				</tr>
 			</table>
 		</form>
@@ -92,7 +94,7 @@
 	
 	<!-- 分页 -->
 	<div class="pagination">
-    <s:if test="pageBean.page!=1">
+    <s:if test="pageBean.page>1">
         <a href="book_list.action?page=<s:property value='pageBean.page-1'/>">上一页</a>
     </s:if>
     <s:iterator var="i" begin="1" end="pageBean.totalPage">

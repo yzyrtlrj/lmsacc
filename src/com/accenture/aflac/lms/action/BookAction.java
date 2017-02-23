@@ -74,6 +74,11 @@ public class BookAction extends ActionSupport implements ModelDriven<Book>{
 		return "bookDetail";
 	}
 	
+	public String searchBook(){
+		PageBean<Book> bookList=bookService.findByConditions(book,page);
+		ActionContext.getContext().getValueStack().set("pageBean", bookList);
+		return "bookList";
+	}
 	private User getUser(){
 		return (User)ServletActionContext.getRequest().getSession().getAttribute("userinfo");
 	}

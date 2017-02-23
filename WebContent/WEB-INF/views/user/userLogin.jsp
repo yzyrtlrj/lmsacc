@@ -14,12 +14,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<base href="<%=basePath%>">
 	<title>userLogin</title>
-<script type="text/javascript">
-    function beforeLogin() {
-		var role=document.getElementsById("role").value;
-		alert(role);
-	}
-</script>
+	<script type="text/javascript">
+	    function clean() {
+			document.getElementById("password").value="";
+			document.getElementById("username").value="";
+		}
+	</script>
 </head>
 <body>
 	<div id="container">
@@ -32,28 +32,21 @@
 					<form action="${pageContext.request.contextPath}/user_login.action" method="post">	
 						<table align="center" border="0" style="border:1px solid #000000;">
 							<tr>
-								<td colspan="2">
-									<s:textfield name="eid" label="用户名" />
-									<s:password name="password" label="密 码" />
+								<td>
+									<s:textfield id="username" name="eid" label="用户名" />		
+								</td>
+								<td>
+									<s:password id="password" name="password" label="密 码" />
 								</td>	
-							</tr>
-							<tr colspan="2">
-							    <td>
-							        <select name="role" id="role">
-									    <option value="normal">普通用户</option>
-									    <option value="admin">管理员</option>
-									</select>
-							    </td>
 							</tr>
 							<tr>
 								<td colspan="2">
-									<input type="submit" value="Login" class="btu" onclick="beforeLogin()"/>
-									<s:reset value="Reset" style="width:70px;"/>
-									
+									<input type="submit" value="Login" class="btu"/>
+									<input type="button" value="Reset" class="btu_reset" onclick="clean()"/>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2"><a href="#">找回密码</a></td>
+								<td colspan="2"><a href="#">忘记密码</a></td>
 							</tr>
 						</table>
 					</form>

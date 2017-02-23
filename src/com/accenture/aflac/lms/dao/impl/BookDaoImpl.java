@@ -52,9 +52,46 @@ public class BookDaoImpl extends BaseDaoImpl<Book> implements BookDao{
 		}
 		return null;
 	}
-
 	
-
+	public int countBooksByConditionSearch(Book book) {
+		// TODO Auto-generated method stub
+		String hql = "from Book where 1=1 ";
+		if(book.getBookName()!=null&&!"".equals(book.getBookName().trim())){
+			hql += " and bookname like '%"+book.getBookName().trim()+"%' ";
+		}
+		if(book.getcategoryName()!=null&&!"".equals(book.getcategoryName().trim())){
+			hql += " and categoryName ='"+book.getcategoryName().trim()+"'";
+		}
+		if(book.getPress()!=null&&!"".equals(book.getPress())){
+			hql += " and press ='"+book.getPress().trim()+"'";
+		}
+		List<Book> bookList= (List<Book>) this.getHibernateTemplate().find(hql);
+		if(bookList!=null && bookList.size()>0){
+			return bookList.size();
+		}
+		return 0;
+	}
 	
+	//分頁顯示
+	@Override
+	public List<Book> findByConditions(Book book,int begin,int limit) {
+		// TODO Auto-generated method stub
+		StringBuffer hql = new StringBuffer();
+		hql.append("from Book where 1=1 ");
+		if(book.getBookName()!=null&&!"".equals(book.getBookName().trim())){
+			hql.append(" and bookname like '%"+book.getBookName().trim()+"%'");
+		}
+		if(book.getcategoryName()!=null&&!"".equals(book.getcategoryName().trim())){
+			hql.append(" and categoryName like '%"+book.getcategoryName().trim()+"%'");
+		}
+		if(book.getPress()!=null&&!"".equals(book.getPress())){
+			hql.append(" and press like '%"+book.getPress().trim()+"%'");
+		}
+		List<Book> bookList= this.getHibernateTemplate().execute(new PageHibernateCallback<Book>(hql.toString(), null, begin, limit));
+		if(bookList!=null && bookList.size()>0){
+			return bookList;
+		}
+		return null;
+	}
 
 }

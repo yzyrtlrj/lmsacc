@@ -66,6 +66,28 @@ public class BookServiceImpl implements BookService{
 		return bookDao.findAllCategory();
 	}
 
+	@Override
+	public PageBean<Book> findByConditions(Book book,int page) {
+		// TODO Auto-generated method stub
+		PageBean<Book> pageBean=new PageBean<>();   //设置当前页数
+		pageBean.setPage(page);   //设置每一页显示的记录数
+		pageBean.setLimit(20);    //设置总记录数--20
+		int totalCount=0;
+		totalCount=bookDao.countBooksByConditionSearch(book);        //?????
+		pageBean.setTotalCount(totalCount);    //设置总页数
+		
+		int totalPage=0;
+		totalPage=(totalCount+pageBean.getLimit()-1)/pageBean.getLimit();
+		pageBean.setTotalPage(totalPage);    //从哪开始
+		
+		int begin=(page-1)*pageBean.getLimit();
+		List<Book> bookList=bookDao.findByConditions(book, begin, pageBean.getLimit());
+		pageBean.setList(bookList);
+		return pageBean;
+	}
+	
+	
+
 	
 	
 
