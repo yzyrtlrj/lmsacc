@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.accenture.aflac.lms.dao.BaseDao;
 import com.accenture.aflac.lms.dao.RecordDao;
-import com.accenture.aflac.lms.dao.entity.Record;
+import com.accenture.aflac.lms.entity.Record;
 import com.accenture.aflac.lms.util.PageHibernateCallback;
 @Repository
 public class RecordDaoImpl extends BaseDaoImpl<Record> implements RecordDao{

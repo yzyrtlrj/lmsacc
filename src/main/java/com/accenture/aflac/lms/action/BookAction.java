@@ -6,8 +6,9 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import com.accenture.aflac.lms.dao.entity.Book;
-import com.accenture.aflac.lms.dao.entity.User;
+
+import com.accenture.aflac.lms.entity.Book;
+import com.accenture.aflac.lms.entity.User;
 import com.accenture.aflac.lms.service.BookService;
 import com.accenture.aflac.lms.service.UserService;
 import com.accenture.aflac.lms.util.PageBean;

@@ -1,4 +1,4 @@
-package com.accenture.aflac.lms.dao.entity;
+package com.accenture.aflac.lms.entity;
 
 import java.io.Serializable;
 import java.util.Date;

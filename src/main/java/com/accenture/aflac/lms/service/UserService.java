@@ -1,6 +1,6 @@
 package com.accenture.aflac.lms.service;
 
-import com.accenture.aflac.lms.dao.entity.User;
+import com.accenture.aflac.lms.entity.User;
 
 public interface UserService {
 

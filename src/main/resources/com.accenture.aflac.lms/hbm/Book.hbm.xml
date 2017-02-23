@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
     
-<hibernate-mapping package="com.accenture.aflac.lms.dao.entity">
+<hibernate-mapping package="com.accenture.aflac.lms.entity">
 
     <class name="Book" table="lms_book" where="deleteStatus=0">
     	<id name="id">

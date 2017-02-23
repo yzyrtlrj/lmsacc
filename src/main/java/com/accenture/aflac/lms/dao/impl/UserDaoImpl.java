@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.accenture.aflac.lms.dao.UserDao;
-import com.accenture.aflac.lms.dao.entity.User;
+import com.accenture.aflac.lms.entity.User;
 @Repository
 public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao{
 	

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.accenture.aflac.lms.dao.UserDao;
-import com.accenture.aflac.lms.dao.entity.User;
+import com.accenture.aflac.lms.entity.User;
 import com.accenture.aflac.lms.service.UserService;
 
 @Service

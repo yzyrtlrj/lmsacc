@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.accenture.aflac.lms.dao.RecordDao;
-import com.accenture.aflac.lms.dao.entity.Record;
+import com.accenture.aflac.lms.entity.Record;
 import com.accenture.aflac.lms.service.RecordService;
 import com.accenture.aflac.lms.util.PageBean;
 @Service

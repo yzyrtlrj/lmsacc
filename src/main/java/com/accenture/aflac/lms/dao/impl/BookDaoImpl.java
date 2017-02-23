@@ -1,6 +1,5 @@
 package com.accenture.aflac.lms.dao.impl;
 
-import com.accenture.aflac.lms.dao.entity.Book;
 import com.accenture.aflac.lms.util.PageHibernateCallback;
 import java.util.List;
 import org.hibernate.SessionFactory;
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
 import com.accenture.aflac.lms.dao.BookDao;
+import com.accenture.aflac.lms.entity.Book;
 @Repository
 public class BookDaoImpl extends BaseDaoImpl<Book> implements BookDao{
 	

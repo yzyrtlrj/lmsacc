@@ -1,6 +1,6 @@
 package com.accenture.aflac.lms.service;
 
-import com.accenture.aflac.lms.dao.entity.Record;
+import com.accenture.aflac.lms.entity.Record;
 import com.accenture.aflac.lms.util.PageBean;
 
 public interface RecordService {

@@ -2,7 +2,7 @@ package com.accenture.aflac.lms.dao;
 
 import java.util.List;
 
-import com.accenture.aflac.lms.dao.entity.Record;
+import com.accenture.aflac.lms.entity.Record;
 
 public interface RecordDao extends BaseDao<Record>{
 

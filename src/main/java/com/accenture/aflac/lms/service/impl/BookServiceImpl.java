@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.accenture.aflac.lms.dao.BookDao;
-import com.accenture.aflac.lms.dao.entity.Book;
+import com.accenture.aflac.lms.entity.Book;
 import com.accenture.aflac.lms.service.BookService;
 import com.accenture.aflac.lms.util.PageBean;
 

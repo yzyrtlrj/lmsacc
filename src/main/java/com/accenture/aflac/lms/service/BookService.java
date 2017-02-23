@@ -2,7 +2,7 @@ package com.accenture.aflac.lms.service;
 
 import java.util.List;
 
-import com.accenture.aflac.lms.dao.entity.Book;
+import com.accenture.aflac.lms.entity.Book;
 import com.accenture.aflac.lms.util.PageBean;
 
 public interface BookService {

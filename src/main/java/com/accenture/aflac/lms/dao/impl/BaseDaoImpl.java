@@ -5,7 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.accenture.aflac.lms.dao.BaseDao;
-import com.accenture.aflac.lms.dao.entity.Book;
+import com.accenture.aflac.lms.entity.Book;
 public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 	
 	protected Class<T> clazz;

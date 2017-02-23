@@ -1,6 +1,6 @@
 package com.accenture.aflac.lms.dao;
 
-import com.accenture.aflac.lms.dao.entity.User;
+import com.accenture.aflac.lms.entity.User;
 
 public interface UserDao extends BaseDao<User>{
 

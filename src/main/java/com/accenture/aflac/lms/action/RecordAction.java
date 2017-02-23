@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.accenture.aflac.lms.dao.entity.Book;
-import com.accenture.aflac.lms.dao.entity.Record;
-import com.accenture.aflac.lms.dao.entity.User;
+import com.accenture.aflac.lms.entity.Book;
+import com.accenture.aflac.lms.entity.Record;
+import com.accenture.aflac.lms.entity.User;
 import com.accenture.aflac.lms.service.BookService;
 import com.accenture.aflac.lms.service.RecordService;
 import com.accenture.aflac.lms.service.UserService;
