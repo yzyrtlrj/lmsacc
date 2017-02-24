@@ -1,9 +1,11 @@
 package com.accenture.aflac.lms.service.impl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.accenture.aflac.lms.dao.BookDao;
 import com.accenture.aflac.lms.entity.Book;
 import com.accenture.aflac.lms.service.BookService;
@@ -65,6 +67,28 @@ public class BookServiceImpl implements BookService{
 		// TODO Auto-generated method stub
 		return bookDao.findAllCategory();
 	}
+
+	@Override
+	public PageBean<Book> findByConditions(Book book,int page) {
+		// TODO Auto-generated method stub
+		PageBean<Book> pageBean=new PageBean<>();   //设置当前页数
+		pageBean.setPage(page);   //设置每一页显示的记录数
+		pageBean.setLimit(20);    //设置总记录数--20
+		int totalCount=0;
+		totalCount=bookDao.countBooksByConditionSearch(book);        //?????
+		pageBean.setTotalCount(totalCount);    //设置总页数
+		
+		int totalPage=0;
+		totalPage=(totalCount+pageBean.getLimit()-1)/pageBean.getLimit();
+		pageBean.setTotalPage(totalPage);    //从哪开始
+		
+		int begin=(page-1)*pageBean.getLimit();
+		List<Book> bookList=bookDao.findByConditions(book, begin, pageBean.getLimit());
+		pageBean.setList(bookList);
+		return pageBean;
+	}
+	
+	
 
 	
 	

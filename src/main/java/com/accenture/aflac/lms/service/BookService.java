@@ -14,6 +14,8 @@ public interface BookService {
 	void update(Book book);
 
 	List<String> findAllCategory();
+	
+	PageBean<Book> findByConditions(Book book,int page);
 
 
 }

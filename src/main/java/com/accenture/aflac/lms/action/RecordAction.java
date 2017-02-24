@@ -12,7 +12,6 @@ import com.accenture.aflac.lms.entity.Record;
 import com.accenture.aflac.lms.entity.User;
 import com.accenture.aflac.lms.service.BookService;
 import com.accenture.aflac.lms.service.RecordService;
-import com.accenture.aflac.lms.service.UserService;
 import com.accenture.aflac.lms.util.PageBean;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
