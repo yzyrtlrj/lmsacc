@@ -29,12 +29,10 @@
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="mappingResources">
-			<list>
-				<value>com/accenture/aflac/lms/dao/entity/User.hbm.xml</value>
-				<value>com/accenture/aflac/lms/dao/entity/Book.hbm.xml</value>
-				<value>com/accenture/aflac/lms/dao/entity/Record.hbm.xml</value>
-			</list>
+		<property name="mappingDirectoryLocations">
+		     <list>
+		         <value>classpath:/hbm/*.hbm.xml</value>
+		     </list>
 		</property>
 		<property name="hibernateProperties">
 			<value>

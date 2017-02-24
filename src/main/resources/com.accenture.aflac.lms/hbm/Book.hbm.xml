@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping package="com.accenture.aflac.lms.entity">
+
+    <class name="Book" table="lms_book" where="deleteStatus=0">
+    	<id name="id">
+    	    <generator class="native"/>
+    	</id>
+
+        <property name="indexNum" unique="true"/>
+        <property name="bookName"/>
+        <property name="isbn"/>
+        <property name="categoryName"/>
+        <property name="bookStatus"/>
+        <property name="author"/>
+        <property name="price"/>
+        <property name="press"/>
+        <property name="bookPicturePath"/>
+        <property name="summary" length="2000"/>
+        <property name="publishDate" type="date"/>
+        
+        <property name="createUser"/>
+        <property name="createTime" type="date"/>
+        <property name="updateUser"/>
+        <property name="updateTime" type="date"/>
+        <property name="deleteStatus"/>
+        
+    
+    </class>
+    
+</hibernate-mapping>
