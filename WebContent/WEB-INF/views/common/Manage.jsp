@@ -10,8 +10,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css" />
-		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/list.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css" />
 		<base href="<%=basePath%>">
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache">

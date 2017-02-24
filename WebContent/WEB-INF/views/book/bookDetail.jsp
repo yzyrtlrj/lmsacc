@@ -15,7 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 /*img{width:109.8px;height:149.7px;}*/
 img{width:113.7px;height:152.7px;}
 body{
-	background-image: url(./resources/images/bedge_grunge.png);
+	background-image: url(./images/bedge_grunge.png);
 }
 
 </style>
@@ -54,7 +54,7 @@ body{
 		        </tr>
 		        <tr>
 		            <td>图片:</td>
-		            <td> <img alt="图片无法显示" src="${pageContext.request.contextPath}/resources/<s:property value='model.bookPicturePath'/>"></td>
+		            <td> <img alt="图片无法显示" src="${pageContext.request.contextPath}/<s:property value='model.bookPicturePath'/>"></td>
 		        </tr>
 		        <tr>
 		            <td>出版日期:</td>

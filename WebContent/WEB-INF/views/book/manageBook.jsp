@@ -10,14 +10,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<link rel="stylesheet" href="../resources/css/common.css" />
-	<link rel="stylesheet" href="../resources/css/list.css" />
+	<link rel="stylesheet" href="../css/common.css" />
+	<link rel="stylesheet" href="../css/list.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<base href="<%=basePath%>">
 	<title>bookList</title>
 	<style type="text/css">
 		body{
-			background-image: url(./resources/images/bedge_grunge.png);
+			background-image: url(./images/bedge_grunge.png);
 		    width:1300px;
 		    height:100%;
 		}
